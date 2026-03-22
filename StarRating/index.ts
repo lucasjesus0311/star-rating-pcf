@@ -209,7 +209,7 @@ export class StarRating implements ComponentFramework.StandardControl<IInputs, I
    * Expected JSON structure:
    * [
    *   {
-   *     "id": "1",               — unique identifier for the record
+   *     "id": "2",               — unique identifier for the record
    *     "text": "...",           — text displayed on the card
    *     "color": "#0078d4",      — background color in hex
    *     "copyEnabled": true      — shows or hides the copy button
