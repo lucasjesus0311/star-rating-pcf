@@ -1,110 +1,110 @@
 # StarRating PCF — Power Apps Component Framework
 
-Componente PCF para Dynamics 365 e Power Apps que substitui campos numéricos por uma interface visual de avaliação com estrelas, campo de comentário e cards de registros dinâmicos via JSON.
+A PCF component for Dynamics 365 and Power Apps that replaces numeric fields with a visual star rating interface, a comment field, and dynamic record cards loaded from a JSON field.
 
-## Funcionalidades
+## Features
 
-- Avaliação de 1 a 5 estrelas com feedback visual
-- Campo de comentário com debounce (notifica o Power Apps 800ms após o usuário parar de digitar)
-- Cards de registros dinâmicos carregados via campo JSON
-- Botão de copiar configurável por registro
-- Estilização com padrão nativo Fluent UI / Dynamics 365
+- 1 to 5 star rating with visual feedback
+- Comment field with debounce (notifies Power Apps 800ms after the user stops typing)
+- Dynamic record cards loaded via a JSON field
+- Configurable copy button per record
+- Native Fluent UI styling matching Dynamics 365 design tokens
 
-## Propriedades
+## Properties
 
-| Propriedade | Tipo | Obrigatório | Descrição |
+| Property | Type | Required | Description |
 |---|---|---|---|
-| `value` | Whole Number | Sim | Nota de 1 a 5 |
-| `comment` | Single Line Text | Não | Comentário do usuário |
-| `recordsJson` | Multiple (Text) | Não | JSON com array de cards |
+| `value` | Whole Number | Yes | Rating from 1 to 5 |
+| `comment` | Single Line Text | No | User comment |
+| `recordsJson` | Multiple (Text) | No | JSON array of record cards |
 
-## Estrutura do JSON (`recordsJson`)
+## JSON Structure (`recordsJson`)
 
 ```json
 [
   {
     "id": "1",
-    "text": "Texto do registro",
+    "text": "Record text",
     "color": "#0078d4",
     "copyEnabled": true
   }
 ]
 ```
 
-| Campo | Tipo | Descrição |
+| Field | Type | Description |
 |---|---|---|
-| `id` | string | Identificador único do registro |
-| `text` | string | Texto exibido no card |
-| `color` | string | Cor de fundo em hex |
-| `copyEnabled` | boolean | Exibe ou oculta o botão de copiar |
+| `id` | string | Unique identifier for the record |
+| `text` | string | Text displayed on the card |
+| `color` | string | Background color in hex |
+| `copyEnabled` | boolean | Shows or hides the copy button |
 
-## Pré-requisitos
+## Prerequisites
 
 - Node.js (LTS)
 - Power Platform CLI (`pac`)
-- Ambiente Power Platform / Dynamics 365
+- Power Platform / Dynamics 365 environment
 
-## Instalação
+## Installation
 
 ```bash
-# Instalar dependências
+# Install dependencies
 npm install
 
-# Testar localmente
+# Test locally
 npm start
 
-# Build de produção
+# Production build
 npm run build -- --buildMode production
 ```
 
 ## Deploy
 
 ```bash
-# Autenticar no ambiente
-pac auth create --url https://seuambiente.crm.dynamics.com
+# Authenticate to your environment
+pac auth create --url https://yourenv.crm.dynamics.com
 
-# Deploy direto (desenvolvimento)
+# Direct deploy (development)
 pac pcf push --publisher-prefix xx
 ```
 
-## Configuração no Formulário
+## Form Configuration
 
-1. Criar os campos na tabela:
-   - `rating_value` → Número Inteiro
-   - `rating_comment` → Linha de Texto
-   - `rating_json` → Texto Multilinha
+1. Create the table columns:
+   - `rating_value` → Whole Number
+   - `rating_comment` → Single Line of Text
+   - `rating_json` → Multiline Text
 
-2. Adicionar o campo `rating_value` ao formulário
+2. Add the `rating_value` field to the form
 
-3. No campo → **Componentes** → **+ Adicionar componente** → selecionar `StarRating`
+3. On the field → **Components** → **+ Add component** → select `StarRating`
 
-4. Mapear as propriedades:
+4. Map the properties:
    - `value` → `rating_value`
    - `comment` → `rating_comment`
    - `recordsJson` → `rating_json`
 
-5. Ocultar os campos `rating_comment` e `rating_json` do formulário
+5. Hide the `rating_comment` and `rating_json` fields from the form
 
-6. Salvar e publicar
+6. Save and publish
 
-## Ciclo de Vida do Componente
+## Component Lifecycle
 
 ```
-Formulário abre → init() → renderStars()
-                              ↓
-Usuário clica estrela → notifyOutputChanged() → getOutputs() → Dynamics salva
-                              ↓
-Usuário digita comentário → debounce 800ms → notifyOutputChanged() → getOutputs()
-                              ↓
-Campo JSON atualizado → updateView() → renderStars() → renderRecords()
+Form opens → init() → renderStars()
+                          ↓
+User clicks star → notifyOutputChanged() → getOutputs() → Dynamics saves
+                          ↓
+User types comment → debounce 800ms → notifyOutputChanged() → getOutputs()
+                          ↓
+JSON field updated → updateView() → renderStars() → renderRecords()
 ```
 
-## Tecnologias
+## Technologies
 
 - TypeScript
 - Power Apps Component Framework (PCF)
-- Fluent UI (tokens de design nativos do Dynamics 365)
+- Fluent UI (native Dynamics 365 design tokens)
 
-## Autor
+## Author
 
 Lucas Teixeira de Jesus — [lucasjesus0311](https://github.com/lucasjesus0311)
