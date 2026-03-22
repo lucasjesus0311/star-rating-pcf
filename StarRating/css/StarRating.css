@@ -1,0 +1,228 @@
+/* =============================================================================
+   Star Rating PCF — Folha de Estilos
+   Padrão visual: Fluent UI (Microsoft Design System)
+   Usado no Dynamics 365 e Power Apps Model-Driven
+
+   O Fluent UI é o design system oficial da Microsoft. Ao seguir seus
+   tokens de cor, tipografia e espaçamento, o componente se integra
+   visualmente ao Dynamics como se fosse um campo nativo.
+   ============================================================================= */
+
+
+/* =============================================================================
+   TOKENS DE DESIGN — variáveis CSS globais
+
+   Tokens são variáveis que representam os valores visuais do design system.
+   Ao usar var(--ms-...) em vez de valores fixos, garantimos consistência
+   e facilitamos futuras atualizações visuais em um único lugar.
+   ============================================================================= */
+:root {
+  /* Cores primárias — azul Microsoft */
+  --ms-color-primary:          #0078d4; /* cor principal de ação e foco     */
+  --ms-color-primary-hover:    #106ebe; /* azul levemente mais escuro       */
+  --ms-color-primary-pressed:  #005a9e; /* azul ainda mais escuro (clique)  */
+
+  /* Escala de neutros — do mais escuro ao mais claro */
+  --ms-neutral-primary:        #323130; /* texto principal                  */
+  --ms-neutral-secondary:      #605e5c; /* texto secundário e bordas        */
+  --ms-neutral-tertiary:       #a19f9d; /* placeholders e ícones inativos   */
+  --ms-neutral-light:          #edebe9; /* bordas sutis e divisores         */
+  --ms-neutral-lighter:        #f3f2f1; /* fundos de hover                  */
+  --ms-neutral-lighter-alt:    #faf9f8; /* fundos alternativos              */
+  --ms-neutral-white:          #ffffff; /* branco puro                      */
+
+  /* Tipografia */
+  --ms-font-size-base:         14px;    /* tamanho padrão do Dynamics       */
+  --ms-font-size-small:        12px;    /* tamanho para labels e botões     */
+  --ms-font-family:            'Segoe UI', 'Segoe UI Web', -apple-system,
+                               BlinkMacSystemFont, sans-serif;
+
+  /* Forma */
+  --ms-border-radius:          2px;     /* cantos levemente arredondados    */
+  --ms-focus-border:           2px solid #0078d4;
+}
+
+
+/* =============================================================================
+   CONTAINER PRINCIPAL
+
+   Elemento raiz do componente, injetado diretamente no formulário do Dynamics.
+   Herda as propriedades visuais base para todos os elementos filhos.
+   ============================================================================= */
+.star-rating-container {
+  font-family:      var(--ms-font-family);
+  font-size:        var(--ms-font-size-base);
+  color:            var(--ms-neutral-primary);
+  background-color: var(--ms-neutral-white);
+  padding:          8px 0;
+  box-sizing:       border-box; /* padding não aumenta a largura total */
+  width:            100%;       /* ocupa toda a largura do campo       */
+}
+
+
+/* =============================================================================
+   ESTRELAS
+
+   Cada estrela é um <span> com classe "star-rating-star" e uma das
+   classes de estado: "active" (★ preenchida) ou "inactive" (☆ vazia).
+   ============================================================================= */
+.star-rating-star {
+  font-size:    20px;
+  cursor:       pointer;
+  margin-right: 2px;
+  display:      inline-block;
+  user-select:  none;       /* impede seleção de texto ao clicar rápido */
+  transition:   color 0.1s ease;
+  line-height:  1;
+}
+
+.star-rating-star:hover {
+  opacity: 0.85; /* feedback visual sutil ao passar o mouse */
+}
+
+/* Estrela preenchida — amarelo padrão Microsoft (mesmo do Office e Teams) */
+.star-rating-star.active {
+  color: #ffb900;
+}
+
+/* Estrela vazia — cinza neutro do Fluent UI */
+.star-rating-star.inactive {
+  color: var(--ms-neutral-tertiary);
+}
+
+
+/* =============================================================================
+   TEXTAREA DE COMENTÁRIO
+
+   Estilizado para ser idêntico ao campo de texto multiline nativo do Dynamics.
+   Bordas, cores, fonte e comportamento de foco seguem o padrão Fluent UI.
+   ============================================================================= */
+.star-rating-textarea {
+  display:          block;
+  margin-top:       8px;
+  width:            100%;
+  min-height:       60px;
+  padding:          4px 8px;
+  border:           1px solid var(--ms-neutral-secondary);
+  border-radius:    var(--ms-border-radius);
+  font-size:        var(--ms-font-size-base);
+  font-family:      var(--ms-font-family);
+  color:            var(--ms-neutral-primary);
+  background-color: var(--ms-neutral-white);
+  resize:           vertical; /* usuário pode redimensionar verticalmente */
+  box-sizing:       border-box;
+  transition:       border-color 0.1s ease;
+  line-height:      1.5;
+}
+
+/* Placeholder sem itálico — padrão do Dynamics */
+.star-rating-textarea::placeholder {
+  color:      var(--ms-neutral-tertiary);
+  font-style: normal;
+}
+
+/* Hover: escurece a borda levemente */
+.star-rating-textarea:hover {
+  border-color: var(--ms-neutral-primary);
+}
+
+/* Focus: borda azul primária + sombra interna simulando double-border do Fluent UI */
+.star-rating-textarea:focus {
+  outline:      none;
+  border-color: var(--ms-color-primary);
+  border-width: 1px;
+  box-shadow:   0 0 0 1px var(--ms-color-primary);
+}
+
+
+/* =============================================================================
+   DIVISOR
+
+   Linha horizontal que separa o comentário dos cards de registros.
+   Usa a mesma cor dos divisores nativos do Dynamics.
+   ============================================================================= */
+.star-rating-divider {
+  border:     none;
+  border-top: 1px solid var(--ms-neutral-light);
+  margin:     12px 0;
+}
+
+
+/* =============================================================================
+   CARDS DE REGISTROS
+
+   Container flexbox que organiza os cards verticalmente.
+   Cada card exibe um registro do JSON com cor e botão de copiar opcionais.
+   ============================================================================= */
+
+/* Container dos cards — empilhados verticalmente com espaçamento entre eles */
+.star-rating-records {
+  display:        flex;
+  flex-direction: column;
+  gap:            4px;
+}
+
+/* Card individual — linha com texto à esquerda e botão à direita */
+.star-rating-card {
+  display:         flex;
+  justify-content: space-between; /* texto na esquerda, botão na direita */
+  align-items:     center;
+  padding:         8px 12px;
+  border-radius:   var(--ms-border-radius);
+  border:          1px solid transparent;
+  transition:      box-shadow 0.1s ease;
+}
+
+/* Hover: sombra de elevação sutil (padrão Fluent UI) */
+.star-rating-card:hover {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.13),
+              0 0px 2px rgba(0, 0, 0, 0.11);
+}
+
+/* Texto do card — branco para contrastar com qualquer cor de fundo */
+.star-rating-card-text {
+  color:       var(--ms-neutral-white);
+  font-size:   var(--ms-font-size-base);
+  font-weight: 400;
+  line-height: 20px;
+}
+
+
+/* =============================================================================
+   BOTÃO COPIAR
+
+   Estilizado como botão "Default" do Fluent UI adaptado para fundo colorido.
+   Fundo semitransparente branco para funcionar sobre qualquer cor de card.
+   ============================================================================= */
+.star-rating-copy-btn {
+  background:    rgba(255, 255, 255, 0.15); /* branco semitransparente     */
+  border:        1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--ms-border-radius);
+  color:         var(--ms-neutral-white);
+  cursor:        pointer;
+  font-family:   var(--ms-font-family);
+  font-size:     var(--ms-font-size-small);
+  font-weight:   600;
+  height:        24px;   /* altura padrão de botões compactos no Fluent UI */
+  padding:       0 12px;
+  margin-left:   8px;
+  white-space:   nowrap; /* impede quebra de linha no texto do botão        */
+  transition:    background 0.1s ease, border-color 0.1s ease;
+  user-select:   none;
+}
+
+/* Hover: aumenta a opacidade do fundo branco */
+.star-rating-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Pressed: fundo ainda mais visível */
+.star-rating-copy-btn:active {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* Focus: anel de foco branco semitransparente (acessibilidade) */
+.star-rating-copy-btn:focus {
+  outline:    none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
